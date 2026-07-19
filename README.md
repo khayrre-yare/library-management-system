@@ -181,6 +181,22 @@ http://localhost:5173
 /admin
 ```
 
+## Public deployment on Render
+
+The repository includes a production-ready `render.yaml` Blueprint and a
+multi-stage Docker build for the Spring Boot API. The Blueprint creates:
+
+- a React static site served through Render's CDN;
+- a Docker-based Spring Boot web service;
+- a managed PostgreSQL database;
+- generated JWT credentials and production CORS/API configuration.
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/khayrre-yare/library-management-system)
+
+During the first Blueprint setup, provide secure values for `ADMIN_EMAIL` and
+`ADMIN_PASSWORD`. Render supplies the database credentials automatically. The
+deployed services automatically rebuild after each commit to `main`.
+
 ## Notes
 
 - Passwords are stored using BCrypt, not plain text.
