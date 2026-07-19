@@ -7,7 +7,8 @@ RUN npm ci
 
 COPY frontend/ ./
 ENV VITE_API_BASE_URL=/api
-RUN npm run build
+RUN npm run build \
+    && find dist/assets -type f \( -name '*.js' -o -name '*.css' \) -exec gzip -9 -k {} \;
 
 FROM maven:3.9.9-eclipse-temurin-17 AS backend-build
 
@@ -28,7 +29,7 @@ RUN groupadd --system library && useradd --system --gid library library
 
 COPY --from=backend-build /workspace/backend/target/*.jar /app/jamhuuriyo-library.jar
 
-ENV JAVA_TOOL_OPTIONS="-XX:InitialRAMPercentage=12.5 -XX:MaxRAMPercentage=45.0 -XX:MaxMetaspaceSize=96m -XX:ReservedCodeCacheSize=32m -XX:+UseSerialGC -Xss256k"
+ENV JAVA_TOOL_OPTIONS="-Xms24m -Xmx96m -XX:MaxMetaspaceSize=88m -XX:ReservedCodeCacheSize=24m -XX:+UseSerialGC -Xss256k"
 
 USER library
 

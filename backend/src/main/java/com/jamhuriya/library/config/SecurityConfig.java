@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(HttpMethod.GET,
-                                "/", "/index.html", "/assets/**", "/favicon.ico",
+                                "/", "/index.html", "/assets/**", "/favicon.ico", "/favicon.svg",
                                 "/books", "/books/**", "/branches", "/branches/**",
                                 "/cart", "/contact", "/login", "/register",
                                 "/dashboard", "/admin", "/orders").permitAll()
