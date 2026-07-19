@@ -197,6 +197,33 @@ During the first Blueprint setup, provide secure values for `ADMIN_EMAIL` and
 `ADMIN_PASSWORD`. Render supplies the database credentials automatically. The
 deployed services automatically rebuild after each commit to `main`.
 
+## No-card deployment with Back4App and Neon
+
+The root `Dockerfile` builds the React frontend and packages it inside the
+Spring Boot application. This produces one public website URL and avoids
+cross-origin configuration in production.
+
+1. Create a free PostgreSQL project on [Neon](https://console.neon.tech/).
+2. In Back4App, create a **Container App** from this GitHub repository.
+3. Keep the repository root as the app root so Back4App uses `/Dockerfile`.
+4. Select the free container and configure the following environment variables:
+
+| Variable | Value |
+|---|---|
+| `PORT` | `8080` |
+| `DB_URL` | `jdbc:postgresql://NEON_HOST/NEON_DATABASE?sslmode=require` |
+| `DB_USERNAME` | Neon database user |
+| `DB_PASSWORD` | Neon database password |
+| `JWT_SECRET` | A private random value of at least 32 characters |
+| `ADMIN_NAME` | Administrator display name |
+| `ADMIN_EMAIL` | Administrator login email |
+| `ADMIN_PASSWORD` | A strong private administrator password |
+| `JPA_SHOW_SQL` | `false` |
+
+Do not commit the real values of these variables. Back4App stores them as
+deployment configuration, and the browser receives none of the database or JWT
+credentials.
+
 ## Notes
 
 - Passwords are stored using BCrypt, not plain text.

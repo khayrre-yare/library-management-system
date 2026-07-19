@@ -1,0 +1,11 @@
+.git/
+.github/
+.idea/
+.vscode/
+.agents/
+backend/target/
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+*.iml
+README.md
