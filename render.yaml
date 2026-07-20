@@ -1,43 +1,24 @@
-databases:
-  - name: jamhuuriyo-library-db-khayrre-yare
-    plan: free
-    region: frankfurt
-    databaseName: library_management
-    user: library_app
-    ipAllowList: []
-
 services:
   - type: web
-    name: jamhuuriyo-library-api-khayrre-yare
+    name: jamhuuriyo-library-khayrre-yare
     runtime: docker
     plan: free
     region: frankfurt
-    rootDir: backend
     dockerfilePath: ./Dockerfile
     dockerContext: .
-    healthCheckPath: /api/books?page=0&size=1
+    healthCheckPath: /api/books
     autoDeployTrigger: commit
     envVars:
-      - key: DB_HOST
-        fromDatabase:
-          name: jamhuuriyo-library-db-khayrre-yare
-          property: host
-      - key: DB_PORT
-        fromDatabase:
-          name: jamhuuriyo-library-db-khayrre-yare
-          property: port
-      - key: DB_NAME
-        fromDatabase:
-          name: jamhuuriyo-library-db-khayrre-yare
-          property: database
+      - key: DB_URL
+        sync: false
       - key: DB_USERNAME
-        fromDatabase:
-          name: jamhuuriyo-library-db-khayrre-yare
-          property: user
+        sync: false
       - key: DB_PASSWORD
-        fromDatabase:
-          name: jamhuuriyo-library-db-khayrre-yare
-          property: password
+        sync: false
+      - key: DB_MAX_POOL_SIZE
+        value: "3"
+      - key: DB_MIN_IDLE
+        value: "0"
       - key: JWT_SECRET
         generateValue: true
       - key: CORS_ALLOWED_ORIGINS
@@ -50,18 +31,3 @@ services:
         sync: false
       - key: ADMIN_PASSWORD
         sync: false
-
-  - type: web
-    name: jamhuuriyo-library-khayrre-yare
-    runtime: static
-    rootDir: frontend
-    buildCommand: npm ci && npm run build
-    staticPublishPath: ./dist
-    autoDeployTrigger: commit
-    envVars:
-      - key: VITE_API_BASE_URL
-        value: https://jamhuuriyo-library-api-khayrre-yare.onrender.com/api
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html

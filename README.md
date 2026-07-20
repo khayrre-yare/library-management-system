@@ -184,18 +184,26 @@ http://localhost:5173
 ## Public deployment on Render
 
 The repository includes a production-ready `render.yaml` Blueprint and a
-multi-stage Docker build for the Spring Boot API. The Blueprint creates:
+multi-stage Docker build. The Blueprint creates one web service that:
 
-- a React static site served through Render's CDN;
-- a Docker-based Spring Boot web service;
-- a managed PostgreSQL database;
-- generated JWT credentials and production CORS/API configuration.
+- builds the React application;
+- packages it inside the Spring Boot application;
+- serves the UI and API from the same permanent HTTPS URL;
+- connects to the existing Neon PostgreSQL database;
+- generates a private JWT secret and applies production configuration.
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/khayrre-yare/library-management-system)
 
-During the first Blueprint setup, provide secure values for `ADMIN_EMAIL` and
-`ADMIN_PASSWORD`. Render supplies the database credentials automatically. The
-deployed services automatically rebuild after each commit to `main`.
+During the first Blueprint setup, provide `DB_URL`, `DB_USERNAME`, and
+`DB_PASSWORD` from the Neon connection details. `DB_URL` must use JDBC format,
+for example `jdbc:postgresql://HOST/DATABASE?sslmode=require`. Also provide
+secure values for `ADMIN_EMAIL` and `ADMIN_PASSWORD`. Never commit these values
+to Git. The deployed service automatically rebuilds after each commit to
+`main`.
+
+Render's Free web service can spin down after a period without traffic. The
+same permanent URL wakes it again on the next visit; Neon continues to retain
+the application data independently.
 
 ## No-card deployment with Back4App and Neon
 
