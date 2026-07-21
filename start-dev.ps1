@@ -127,6 +127,11 @@ else {
     Write-Host 'Backend is already running on port 8080.' -ForegroundColor Green
 }
 
+if (Test-LocalPort -Port 5173) {
+    Write-Host 'React is already running on port 5173.' -ForegroundColor Green
+    exit 0
+}
+
 Write-Host 'Starting React at http://localhost:5173 ...' -ForegroundColor Cyan
 Set-Location $frontendDirectory
 & $npm.Source run dev:frontend
