@@ -29,7 +29,7 @@ export default function BranchDetails() {
         <div className="container branch-profile__layout">
           <main className="branch-profile__main">
             <span className="eyebrow">About this branch</span>
-            <h2>A local place to read, learn, and connect</h2>
+            <h2>A meel ku wacan wax aqriska iyo waxbarashada</h2>
             <p className="branch-profile__lead">{branch.description}</p>
 
             <div className="branch-service-grid">
